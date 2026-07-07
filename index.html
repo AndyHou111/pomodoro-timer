@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pomodoro Timer - 番茄钟</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍅</text></svg>">
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header class="header">
+    <div class="header-left">
+      <button class="btn-icon" id="btn-menu" title="Menu" aria-label="Menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <h1 class="logo" data-i18n="appTitle">🍅 番茄钟</h1>
+    </div>
+    <nav class="header-nav">
+      <button class="nav-tab active" data-view="timer" data-i18n="timer">计时</button>
+      <button class="nav-tab" data-view="calendar" data-i18n="calendar">日历</button>
+    </nav>
+    <div class="header-right">
+      <button class="btn-icon" id="btn-settings" title="Settings" aria-label="Settings">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ===== SETTINGS DROPDOWN ===== -->
+  <div class="settings-dropdown" id="settings-dropdown">
+    <div class="settings-group">
+      <label class="settings-label" data-i18n="theme">主题</label>
+      <div class="toggle-row">
+        <span data-i18n="themeLight">☀️ 浅色</span>
+        <label class="switch">
+          <input type="checkbox" id="toggle-theme">
+          <span class="slider"></span>
+        </label>
+        <span data-i18n="themeDark">🌙 深色</span>
+      </div>
+    </div>
+    <div class="settings-group">
+      <label class="settings-label" data-i18n="language">语言</label>
+      <div class="toggle-row">
+        <span>中文</span>
+        <label class="switch">
+          <input type="checkbox" id="toggle-lang">
+          <span class="slider"></span>
+        </label>
+        <span>English</span>
+      </div>
+    </div>
+    <div class="settings-group">
+      <label class="settings-label" data-i18n="sound">音效</label>
+      <div class="toggle-row">
+        <span data-i18n="off">关</span>
+        <label class="switch">
+          <input type="checkbox" id="toggle-sound" checked>
+          <span class="slider"></span>
+        </label>
+        <span data-i18n="on">开</span>
+      </div>
+    </div>
+    <div class="settings-group">
+      <label class="settings-label" data-i18n="notification">通知</label>
+      <div class="toggle-row">
+        <span data-i18n="off">关</span>
+        <label class="switch">
+          <input type="checkbox" id="toggle-notification" checked>
+          <span class="slider"></span>
+        </label>
+        <span data-i18n="on">开</span>
+      </div>
+    </div>
+    <div class="settings-group">
+      <label class="settings-label" data-i18n="alarmDuration">响铃时长</label>
+      <select class="select" id="select-alarm-duration">
+        <option value="0" data-i18n-opt="alarmSilent">静音</option>
+        <option value="5" data-i18n-opt="alarm5s">5 秒</option>
+        <option value="10" selected data-i18n-opt="alarm10s">10 秒</option>
+        <option value="30" data-i18n-opt="alarm30s">30 秒</option>
+        <option value="60" data-i18n-opt="alarm1min">1 分钟</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- ===== SIDE PANEL (Plans) ===== -->
+  <div class="side-panel" id="side-panel">
+    <div class="side-panel-header">
+      <h2 data-i18n="plans">作息计划</h2>
+      <button class="btn-icon" id="btn-close-panel" aria-label="Close">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <!-- Presets -->
+    <div class="section">
+      <h3 class="section-title" data-i18n="quickStart">快速开始</h3>
+      <div class="preset-list" id="preset-list">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+
+    <!-- Custom Plans -->
+    <div class="section">
+      <h3 class="section-title" data-i18n="customPlans">自定义计划</h3>
+      <div class="plan-list" id="plan-list">
+        <!-- Rendered by JS -->
+      </div>
+      <button class="btn btn-outline btn-full" id="btn-new-plan">
+        <span data-i18n="newPlan">+ 新建计划</span>
+      </button>
+    </div>
+
+    <!-- Plan Editor (hidden by default) -->
+    <div class="plan-editor" id="plan-editor" style="display:none;">
+      <h3 class="section-title" data-i18n="editPlan">编辑计划</h3>
+      <input type="text" class="input" id="plan-name-input" data-i18n-placeholder="planNamePlaceholder" placeholder="计划名称">
+      <div class="plan-steps" id="plan-steps">
+        <!-- Rendered by JS -->
+      </div>
+      <button class="btn btn-sm btn-outline" id="btn-add-step">
+        <span data-i18n="addStep">+ 添加步骤</span>
+      </button>
+      <div class="plan-editor-actions">
+        <button class="btn btn-primary btn-sm" id="btn-save-plan" data-i18n="save">保存</button>
+        <button class="btn btn-ghost btn-sm" id="btn-cancel-plan" data-i18n="cancel">取消</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== OVERLAY ===== -->
+  <div class="overlay" id="overlay"></div>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="main-content">
+
+    <!-- TIMER VIEW -->
+    <div class="view active" id="view-timer">
+      <div class="timer-container">
+        <!-- Custom Time Input (shown when idle) -->
+        <div class="custom-time" id="custom-time-input">
+          <div class="custom-time-row">
+            <input type="number" class="input custom-time-input" id="custom-minutes" value="25" min="1" max="180" aria-label="Custom minutes">
+            <span class="custom-time-label" data-i18n="min">分钟</span>
+            <button class="btn btn-sm btn-primary" id="btn-custom-start" data-i18n="startCustom">自定开始</button>
+          </div>
+        </div>
+
+        <!-- Active Plan Indicator -->
+        <div class="active-plan" id="active-plan-display">
+          <span class="active-plan-name" id="active-plan-name"></span>
+          <span class="active-plan-step" id="active-plan-step"></span>
+        </div>
+
+        <!-- Circular Progress -->
+        <div class="progress-ring-container">
+          <svg class="progress-ring" viewBox="0 0 200 200">
+            <circle class="progress-ring-bg" cx="100" cy="100" r="90"/>
+            <circle class="progress-ring-fill" cx="100" cy="100" r="90" id="progress-ring-fill"/>
+          </svg>
+          <div class="timer-display">
+            <span class="timer-time" id="timer-time">25:00</span>
+            <span class="timer-mode" id="timer-mode" data-i18n="ready">准备开始</span>
+          </div>
+        </div>
+
+        <!-- Timer Controls -->
+        <div class="timer-controls">
+          <button class="btn btn-round btn-primary" id="btn-start" aria-label="Start">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+          </button>
+          <button class="btn btn-round btn-outline" id="btn-pause" style="display:none;" aria-label="Pause">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><rect x="5" y="4" width="5" height="16"/><rect x="14" y="4" width="5" height="16"/></svg>
+          </button>
+          <button class="btn btn-round btn-ghost" id="btn-stop" style="display:none;" aria-label="Stop">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>
+          </button>
+        </div>
+
+        <!-- Extra Actions -->
+        <div class="timer-extra-actions">
+          <button class="btn btn-sm btn-ghost" id="btn-toggle-notes" data-i18n-title="notes" title="笔记">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            <span data-i18n="notes">笔记</span>
+          </button>
+          <button class="btn btn-sm btn-ghost" id="btn-pip" data-i18n-title="pipMode" title="小窗模式">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><rect x="10" y="8" width="8" height="8" rx="1"/></svg>
+            <span data-i18n="pipMode">小窗</span>
+          </button>
+        </div>
+
+        <!-- Session Info -->
+        <div class="session-info" id="session-info">
+          <div class="session-stat">
+            <span class="session-stat-value" id="session-count">0</span>
+            <span class="session-stat-label" data-i18n="todaySessions">今日番茄</span>
+          </div>
+          <div class="session-stat">
+            <span class="session-stat-value" id="session-total-time">0m</span>
+            <span class="session-stat-label" data-i18n="todayFocus">今日专注</span>
+          </div>
+        </div>
+
+        <!-- Expandable Notes Panel -->
+        <div class="notes-panel" id="notes-panel">
+          <div class="notes-panel-header">
+            <h3 data-i18n="sessionNotes">📝 会话笔记</h3>
+            <button class="btn-icon" id="btn-close-notes" aria-label="Close notes">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+          <textarea class="textarea notes-textarea" id="notes-textarea" data-i18n-placeholder="notesPlaceholder" placeholder="记录想法、待办事项..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- CALENDAR VIEW -->
+    <div class="view" id="view-calendar">
+      <div class="calendar-container">
+        <div class="calendar-header">
+          <button class="btn-icon" id="btn-prev-month">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15,18 9,12 15,6"/></svg>
+          </button>
+          <h2 class="calendar-month-label" id="calendar-month-label">2026年7月</h2>
+          <button class="btn-icon" id="btn-next-month">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg>
+          </button>
+        </div>
+        <div class="calendar-grid" id="calendar-grid">
+          <!-- Rendered by JS -->
+        </div>
+        <!-- Day Detail -->
+        <div class="calendar-day-detail" id="calendar-day-detail">
+          <h3 class="day-detail-title" id="day-detail-title" data-i18n="selectDay">选择日期查看详情</h3>
+          <div class="day-detail-list" id="day-detail-list">
+            <!-- Rendered by JS -->
+          </div>
+          <div class="day-detail-summary" id="day-detail-summary">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ===== TASK LOG MODAL ===== -->
+  <div class="modal" id="task-log-modal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="modal-icon">🎉</span>
+        <h2 data-i18n="sessionComplete">番茄钟完成！</h2>
+      </div>
+      <div class="modal-body">
+        <p class="modal-duration" id="task-log-duration"></p>
+        <label class="input-label" data-i18n="whatDidYouDo">这段时间你做了什么？</label>
+        <textarea class="textarea" id="task-log-input" rows="3" data-i18n-placeholder="taskPlaceholder" placeholder="输入任务总结..."></textarea>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" id="btn-skip-log" data-i18n="skip">跳过</button>
+        <button class="btn btn-primary" id="btn-save-log" data-i18n="saveTask">保存记录</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== ALARM OVERLAY ===== -->
+  <div class="alarm-overlay" id="alarm-overlay">
+    <div class="alarm-content">
+      <div class="alarm-icon">🔔</div>
+      <h2 class="alarm-title" id="alarm-title" data-i18n="timeUp">时间到！</h2>
+      <p class="alarm-subtitle" id="alarm-subtitle"></p>
+      <button class="btn btn-primary btn-lg" id="btn-stop-alarm" data-i18n="stopAlarm">停止响铃</button>
+    </div>
+  </div>
+
+  <!-- ===== SCRIPTS ===== -->
+  <script src="js/storage.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/timer.js"></script>
+  <script src="js/plans.js"></script>
+  <script src="js/calendar.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
