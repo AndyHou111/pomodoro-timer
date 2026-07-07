@@ -90,6 +90,52 @@ pomodoro-timer/
 | `Space` | Start / Pause / Resume |
 | `Esc` | Stop timer / Close modals |
 
+## 🖥️ macOS App
+
+Native macOS version built with SwiftUI with all features plus extras:
+
+| Web | macOS |
+|---|---|
+| 🌐 Browser-based | 🖥️ Native SwiftUI app |
+| localStorage | UserDefaults |
+| Picture-in-Picture | 🪟 NSPanel floating window |
+| Browser notification | 🔔 System beep alarm |
+| - | 🍅 Menu bar mini timer |
+| - | 🌓 System theme auto-follow |
+
+### Install
+
+**Download DMG:**
+1. Go to [Releases](https://github.com/AndyHou111/pomodoro-timer/releases)
+2. Download `Pomodoro.dmg`
+3. Double-click to mount
+4. Drag 🍅 to **Applications** folder
+
+**First launch:** Right-click → Open (one-time security bypass for unsigned app)
+
+**Build from source:**
+```bash
+open macos/Pomodoro.xcodeproj
+# Press ⌘+R in Xcode
+```
+
+Project source: `macos/Pomodoro/`
+
+## 📁 Full Project Structure
+
+```
+pomodoro-timer/
+├── index.html              # Web app entry point
+├── css/style.css           # Web styles
+├── js/                     # Web app modules
+├── macos/                  # 🖥️ macOS app
+│   ├── Pomodoro.xcodeproj  # Xcode project
+│   ├── Pomodoro.dmg        # Pre-built DMG installer
+│   ├── release.sh          # Auto-release script
+│   └── Pomodoro/           # SwiftUI source code
+└── README.md
+```
+
 ## 📄 License
 
 MIT — feel free to use, modify, and share!
