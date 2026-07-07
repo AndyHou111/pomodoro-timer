@@ -105,18 +105,35 @@ Native macOS version built with SwiftUI with all features plus extras:
 
 ### Install
 
-**Download DMG:**
-1. Go to [Releases](https://github.com/AndyHou111/pomodoro-timer/releases)
-2. Download `Pomodoro.dmg`
-3. Double-click to mount
-4. Drag 🍅 to **Applications** folder
+> ⚠️ **IMPORTANT — Read Before Opening** ⚠️
 
-**First launch:** Right-click → Open (one-time security bypass for unsigned app)
+Since this app is not signed with an Apple Developer certificate ($99/year), macOS will show a security warning. **This does NOT mean the app is dangerous.** It's just Apple's default policy for all unsigned apps. You only need to bypass it **once**.
 
-**Build from source:**
+---
+
+**Step-by-step:**
+
+1. Go to [Releases](https://github.com/AndyHou111/pomodoro-timer/releases) → Download `Pomodoro.dmg`
+2. Double-click the DMG to mount it
+3. Drag 🍅 to the **Applications** folder
+4. **⚠️ DO NOT double-click the app** — it will be blocked
+
+| ❌ WRONG | ✅ RIGHT |
+|---|---|
+| Double-click `Pomodoro.app` | **Right-click** `Pomodoro.app` → **Open** |
+
+5. A warning will appear: *"Apple could not verify Pomodoro is free of malware..."*
+6. Click **「Open」** in the dialog
+7. ✅ Done! The app opens normally. You'll never see this warning again for this app.
+
+---
+
+> **Why this happens:** Apple requires all Mac apps to be "notarized" via a paid Developer account. This is an open-source project — the entire source code is in `macos/Pomodoro/`. Feel free to inspect it.
+
+**Build from source (no warnings, completely free):**
 ```bash
 open macos/Pomodoro.xcodeproj
-# Press ⌘+R in Xcode
+# Press ⌘+R in Xcode to build and run directly
 ```
 
 Project source: `macos/Pomodoro/`
